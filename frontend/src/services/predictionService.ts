@@ -2,11 +2,9 @@ import axios from 'axios';
 import { Prediction } from '../types';
 import { getAuthHeader } from './authService';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
+// Use the same base URL as in authService.ts
+const API_URL = process.env.REACT_APP_API_URL || 'https://smartbasket-u8bn.onrender.com/api/v1';
 
-/**
- * Get a prediction for the next item based on current basket
- */
 export const predictNextItem = async (items: string[]): Promise<Prediction> => {
   try {
     const response = await axios.post(
@@ -23,27 +21,23 @@ export const predictNextItem = async (items: string[]): Promise<Prediction> => {
   }
 };
 
-/**
- * Get prediction history for the current user
- */
 export const getPredictionHistory = async (limit = 10): Promise<Prediction[]> => {
   try {
     const response = await axios.get(`${API_URL}/predictions/history`, {
       params: { limit },
-      headers: await getAuthHeader(),
+      headers: await getAuthHeader()
     });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.detail || 'Failed to get prediction history');
+      throw new Error(
+        error.response.data.detail || 'Failed to get prediction history'
+      );
     }
     throw new Error('Network error occurred');
   }
 };
 
-/**
- * Provide feedback on a prediction
- */
 export const providePredictionFeedback = async (
   predictionId: number,
   feedback: string
@@ -56,7 +50,9 @@ export const providePredictionFeedback = async (
     );
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.detail || 'Failed to submit feedback');
+      throw new Error(
+        error.response.data.detail || 'Failed to submit feedback'
+      );
     }
     throw new Error('Network error occurred');
   }
