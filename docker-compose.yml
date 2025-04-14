@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: smartbasket
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db/smartbasket
+      - SECRET_KEY=${SECRET_KEY:-default_development_secret_key}
+      - MODEL_PATH=/app/models/current
+    volumes:
+      - ./backend:/app
+      - ./backend/models:/app/models
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api/v1
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+  
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+  
+  ml-service:
+    build:
+      context: ./ml
+      dockerfile: Dockerfile
+    volumes:
+      - ./ml:/app
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db/smartbasket
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    command: python -m uvicorn train_worker:app --host 0.0.0.0
+
+volumes:
+  postgres_data:
+  redis_data:
