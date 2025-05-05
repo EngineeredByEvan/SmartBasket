@@ -70,19 +70,21 @@ Combines machine learning with full-stack development for a smarter, more intuit
 ---
 
 ## 🛣️ Roadmap
-⏳ Implement attention-based or LSTM model
-⏳ Add profile-based personalization
-⏳ Improve metadata (e.g. day/time of purchase)
-⏳ Expand UI: profile settings, trend graphs
-⏳ CI pipeline for ML model retraining
+- ⏳ Implement attention-based or LSTM model
+- ⏳ Add profile-based personalization
+- ⏳ Improve metadata (e.g. day/time of purchase)
+- ⏳ Expand UI: profile settings, trend graphs
+- ⏳ CI pipeline for ML model retraining
 
 ---
 
 ## 🌐 Live Demo
-🔗 Try SmartBasket
-🧪 Test Credentials:
-Login: Test
-Password: test
+- 🔗 Try SmartBasket
+- First, visit the following link to spin up back-end deployment: https://smartbasket-u8bn.onrender.com
+- Once back-end had lauched, visit the following link to access the web app: https://smartbasket-frontend.onrender.com
+- 🧪 Test Credentials:
+- Login: Test
+- Password: test
 
 (Note: Deployment may take up to a minute to spin up)
 
