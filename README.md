@@ -81,7 +81,7 @@ Combines machine learning with full-stack development for a smarter, more intuit
 ## 🌐 Live Demo
 - 🔗 Try SmartBasket
 - First, visit the following link to spin up back-end deployment: https://smartbasket-u8bn.onrender.com
-- Once back-end had lauched, visit the following link to access the web app: https://smartbasket-frontend.onrender.com
+- Once back-end has lauched, visit the following link to access the web app: https://smartbasket-frontend.onrender.com
 - 🧪 Test Credentials:
 - Login: Test
 - Password: test
